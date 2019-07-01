@@ -36,23 +36,13 @@ public class LanesManager : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void HidePlayer(int laneNumber) => laneRunners[laneNumber - 1].HidePlayer();
 
     public void ShowPlayer(int laneNumber) => laneRunners[laneNumber - 1].ShowPlayer();
 
-    public void MovePlayer(int laneNumber, float distance) => laneRunners[laneNumber - 1].MovePlayer(distance);
+    public int MovePlayer(int laneNumber, float distance) => laneRunners[laneNumber - 1].MovePlayer(distance);
 
     public float GetPlayerPosition(int laneNumber) => laneRunners[laneNumber - 1].GetPlayerPosition();
+
+    public void SetPlayerColor(int laneNumber, int colorNumber) => laneRunners[laneNumber - 1].SetPlayerColor(colorNumber);
 }

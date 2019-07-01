@@ -14,6 +14,8 @@ public class LaneRunner : MonoBehaviour
     private const string playerObjectName = "Player";
 
     private Material[] playerColorMaterials;
+
+    // playerNumberOfColors should equal MusicSequencer's numberOfClipsPerLane
     private int playerNumberOfColors;
     private const string playerColorMaterialsGameObjectName = "PlayerColorMaterials";
 
@@ -30,27 +32,31 @@ public class LaneRunner : MonoBehaviour
 
     public void HidePlayer()
     {
-        Debug.Log("- Player #" + laneNumber + ": Deactivated");
+        Debug.Log("-@ Player #" + laneNumber + ": Deactivated");
         playerObject.SetActive(false);
     }
 
     public void ShowPlayer()
     {
-        Debug.Log("+ Player #" + laneNumber + ": Activated");
+        Debug.Log("+@ Player #" + laneNumber + ": Activated");
         playerObject.SetActive(true);
     }
 
-    public void MovePlayer(float distance)
+    //Returns distance bucket number that this player is in after moving 
+    // Ranges from 1 to Number of colors (also = Number of clips per lane)
+    public int MovePlayer(float distance)
     {
         float newZ = playerObject.transform.localPosition.z + distance;
         if ((newZ <= laneFarthestDistanceMeters) && (newZ >= laneClosestDistanceMeters))
         {
-            Debug.Log("<> Player #" + laneNumber + ": Moving " + distance + " meters");
+            Debug.Log("@ Player #" + laneNumber + ": Moving " + distance + " meters");
             playerObject.transform.Translate(0f, 0f, distance);
         }
 
-        int colorNum = Math.Min((int)(GetPlayerPosition() * (float)playerNumberOfColors) + 1, playerNumberOfColors);
-        SetPlayerColor(colorNum);
+        // Math.Min is necessary because this would return 1 too high when GetPlayerPosition is exactly 1.0
+        return Math.Min((int)(GetPlayerPosition() * (float)playerNumberOfColors) + 1, playerNumberOfColors);
+
+
     }
 
     // Default ("no color") is index 0

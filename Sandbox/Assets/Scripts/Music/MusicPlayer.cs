@@ -12,6 +12,8 @@ public class MusicPlayer : MonoBehaviour
     
     private const string MusicClipsGameObjectName = "MusicClips";
 
+    private int nextClipNumber = 0;
+
     public void Initialize(int laneNumber, int numberOfClipsPerLane)
     {
         this.laneNumber = laneNumber;
@@ -29,28 +31,43 @@ public class MusicPlayer : MonoBehaviour
             AudioSource sound = this.GetComponent<AudioSource>();
             for (int clipNumber = 0; clipNumber < clips.Length; clipNumber++)
                 sound.clip = clips[clipNumber];
-            Debug.Log("All clips loaded for Lane #" + laneNumber);
+            Debug.Log("> All music clips loaded for Lane #" + laneNumber);
         }
     }
 
-    private int nextClipNumber;
 
-    // Start is called before the first frame update
-    public void StartWithClipNumber(int clipNumber)
+    public void StartClip()
     {
+        AudioSource music = this.GetComponent<AudioSource>();
+        music.clip = clips[nextClipNumber];
+        music.loop = false;
+
+        music.Play();
+        Debug.Log("> Lane #" + laneNumber + ": Playing clip #" + nextClipNumber);
     }
 
-    public void TogglePlayPause()
+    public void Pause()
     {
+        AudioSource music = this.GetComponent<AudioSource>();
+
+        if (music.isPlaying)
+        {
+            music.Pause();
+            Debug.Log("> Lane #" + laneNumber + ": Paused");
+        }
     }
 
-    public void StopMusic()
+    public void UnPause()
     {
+        AudioSource music = this.GetComponent<AudioSource>();
+
+        music.UnPause();
+        Debug.Log("> Lane #" + laneNumber + ": UnPaused");
     }
 
-    public void SetNextClipNumber(int clipNumber)
+    public void SetNextClipNumber(int playerDistanceBucket)
     {
-        nextClipNumber = clipNumber;
-        Debug.Log("* Lane #" + laneNumber + " - Next clip set to: " + nextClipNumber);
+        nextClipNumber = playerDistanceBucket - 1;
+        Debug.Log("> Lane #" + laneNumber + " - Next clip set to: " + nextClipNumber);
     }
 }

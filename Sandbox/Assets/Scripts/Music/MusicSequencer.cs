@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,25 +31,23 @@ public class MusicSequencer : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    public void StartClip(int laneNumber) => musicPlayers[laneNumber - 1].StartClip();
 
+    public void SetNextClipNumber(int laneNumber, int newClipNumber) => musicPlayers[laneNumber - 1].SetNextClipNumber(newClipNumber);
+
+    public void PauseAll(bool[] playerActive)
+    {
+        for (int laneIndex = 0; laneIndex < playerActive.Length; laneIndex++)
+            if (playerActive[laneIndex])
+                musicPlayers[laneIndex].Pause();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UnpauseAll(bool[] playerActive)
     {
-
+        for (int laneIndex = 0; laneIndex < playerActive.Length; laneIndex++)
+            if (playerActive[laneIndex])
+                musicPlayers[laneIndex].UnPause();
     }
 
-    public void PauseAll()
-    {
-        Debug.Log("= Music paused");
-    }
 
-    public void UnpauseAll()
-    {
-        Debug.Log("> Music playing");
-    }
 }

@@ -5,10 +5,13 @@ using UnityEngine;
 public class InputAndTimerManager : MonoBehaviour
 {
     public int numberOfLanes = 4;
+    public int startingNumberOfActivePlayers = 1;
 
     public float clipDurationsSeconds = 8f;
 
     public float playerMoveIncrementMeters = 0.02f;
+
+
 
     private const string lanesManagerObjectName = "LanesAndPlayers";
     private const string musicSequencerObjectName = "MusicSequencer";
@@ -30,13 +33,30 @@ public class InputAndTimerManager : MonoBehaviour
         musicSequencer.Initialize(numberOfLanes);
 
         playerActive = new bool[numberOfLanes];
-        numberOfPlayersActive = numberOfLanes;
+        numberOfPlayersActive = numberOfLanes - startingNumberOfActivePlayers;
         for (int playerIndex = 0; playerIndex < numberOfLanes; playerIndex++)
         {
-            playerActive[playerIndex] = true;
-            ActivateDeactivatePlayer(playerIndex + 1);
+            if (playerIndex < startingNumberOfActivePlayers)
+            {
+                // Activate player
+                playerActive[playerIndex] = false;
+                ActivateDeactivatePlayer(playerIndex + 1);
+            }
+            else
+            {
+                // Deactivate player
+                playerActive[playerIndex] = true;
+                ActivateDeactivatePlayer(playerIndex + 1);
+            }
+        }
+
+        if (numberOfPlayersActive > 0)
+        {
+            StartMusic();
+            // Start HEARTBEAT
         }
     }
+
 
     // Update is called once per frame
     void Update()
@@ -50,12 +70,12 @@ public class InputAndTimerManager : MonoBehaviour
     {
         if (musicPaused)
         {
-            musicSequencer.UnpauseAll();
+            musicSequencer.UnpauseAll(playerActive);
             // RESTART HEARTBEAT
         }
         else
         {
-            musicSequencer.PauseAll();
+            musicSequencer.PauseAll(playerActive);
             // PAUSE HEARTBEAT
         }
         musicPaused = !musicPaused;
@@ -81,6 +101,10 @@ public class InputAndTimerManager : MonoBehaviour
             lanesManager.ShowPlayer(laneNumber);
             numberOfPlayersActive++;
 
+            int bucketNumber = lanesManager.MovePlayer(laneIndex + 1, 0f);
+            lanesManager.SetPlayerColor(laneIndex + 1, bucketNumber);
+            musicSequencer.SetNextClipNumber(laneIndex + 1, bucketNumber);
+
             if (numberOfPlayersActive == 1)
             {
                 // START HEARTBEAT, START MUSIC
@@ -91,9 +115,20 @@ public class InputAndTimerManager : MonoBehaviour
         Debug.Log("Number of players active = " + numberOfPlayersActive);
     }
 
-    void PlayerMove(int playerNumber, float distance) => lanesManager.MovePlayer(playerNumber, distance);
+    void StartMusic()
+    {
+        for (int playerIndex = 0; playerIndex < numberOfLanes; playerIndex++)
+        {
+            if (playerActive[playerIndex])
+                musicSequencer.StartClip(playerIndex + 1);
+        }
+    }
 
-    // -------------- Keyboard input -------------- 
+
+    // ----------------------------------------------------------------------------------------------------------------
+    //  Keyboard input 
+    // ----------------------------------------------------------------------------------------------------------------
+
     int updateCounter = 0;  // For keyboard input
     int lastKeyCounter = 0;
     KeyCode[] addRemovePlayerKeys = { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9 };
@@ -121,11 +156,18 @@ public class InputAndTimerManager : MonoBehaviour
 
             if (playerActive[keyIndex])
             {
+                int newBucketNumber = -1;
                 if (Input.GetKey(playerStepBackKeys[keyIndex]))
-                    PlayerMove(keyIndex + 1, playerMoveIncrementMeters);
+                    newBucketNumber = lanesManager.MovePlayer(keyIndex + 1, playerMoveIncrementMeters);
 
                 if (Input.GetKey(playerStepForwardKeys[keyIndex]))
-                    PlayerMove(keyIndex + 1, -playerMoveIncrementMeters);
+                    newBucketNumber = lanesManager.MovePlayer(keyIndex + 1, -playerMoveIncrementMeters);
+
+                if (newBucketNumber > -1)
+                {
+                    lanesManager.SetPlayerColor(keyIndex + 1, newBucketNumber);
+                    musicSequencer.SetNextClipNumber(keyIndex + 1, newBucketNumber);
+                }
             }
         }
     }

@@ -218,9 +218,15 @@ MonoBehaviour:
   - clips:
     - {fileID: 8300000, guid: 6beac3f2e236e9042a56d8bfdc7d72de, type: 3}
     - {fileID: 8300000, guid: 7291cd9d3f4b7d74e9ce2cb77757c70f, type: 3}
+    - {fileID: 8300000, guid: 1071d1c13f3d5544180372e0cd93ecb2, type: 3}
   - clips:
     - {fileID: 8300000, guid: 37e65aea8bf2ced4cb64fe4e1175edc3, type: 3}
-  - clips: []
+    - {fileID: 8300000, guid: 5e93296a2659fb64faec7af184fcdd78, type: 3}
+    - {fileID: 8300000, guid: b302011514ba79e458310faa43bd6acd, type: 3}
+  - clips:
+    - {fileID: 8300000, guid: 298daba62c939814c953b0867a15b5ed, type: 3}
+    - {fileID: 8300000, guid: d2879f0e8dcd3354380289910b707bf3, type: 3}
+    - {fileID: 8300000, guid: aae9bc2f642cc6f439083518bb776c6e, type: 3}
   - clips: []
   - clips: []
   - clips: []
@@ -463,6 +469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfLanes: 4
+  startingNumberOfActivePlayers: 1
   clipDurationsSeconds: 8
   playerMoveIncrementMeters: 0.05
 --- !u!1 &1795716036
