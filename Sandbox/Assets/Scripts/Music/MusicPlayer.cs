@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MusicSequencer : MonoBehaviour
+public class MusicPlayer : MonoBehaviour
 {
     // Lane numbers are 1..N and Lane indexes are 0..N-1
     private int laneNumber;
@@ -52,11 +52,5 @@ public class MusicSequencer : MonoBehaviour
     {
         nextClipNumber = clipNumber;
         Debug.Log("* Lane #" + laneNumber + " - Next clip set to: " + nextClipNumber);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

@@ -2,16 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LanesCreator : MonoBehaviour
+public class LanesManager : MonoBehaviour
 {
-    public int numberOfLanes = 4;
     public float laneSeparationAngleDegrees = 20f;
     public GameObject lanePrefab;
 
-    const string laneNamePrefix = "Lane";
+    const string laneNamePrefix = "LaneAndPlayer";
 
-    void Awake()
+    private int numberOfLanes;
+    private LaneRunner[] laneRunners;
+
+    public void Initialize(int numLanes)
     {
+        numberOfLanes = numLanes;
+
+        laneRunners = new LaneRunner[numberOfLanes];
+
         float laneAngleY = -(laneSeparationAngleDegrees * (numberOfLanes - 1)) / 2;
 
         for (int laneNumber = 1; laneNumber <= numberOfLanes; laneNumber++)
@@ -23,6 +29,10 @@ public class LanesCreator : MonoBehaviour
             newLane.transform.parent = this.transform;
             newLane.transform.localPosition = Vector3.zero;  // Reset position
             newLane.name = laneNamePrefix + laneNumber.ToString();
+
+            laneRunners[laneNumber - 1] = newLane.GetComponent<LaneRunner>();
+
+            laneRunners[laneNumber - 1].Initialize(laneNumber);
         }
     }
 
