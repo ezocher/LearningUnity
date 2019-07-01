@@ -370,6 +370,55 @@ MonoBehaviour:
   numberOfClipsPerLane: 3
   musicPlayerPrefab: {fileID: 2178455920758275031, guid: a4f59fe99df4f084e8f356a7546c839b,
     type: 3}
+--- !u!1 &697631013
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 697631014}
+  - component: {fileID: 697631015}
+  m_Layer: 0
+  m_Name: PlayerColorMaterials
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &697631014
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697631013}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1795716037}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &697631015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697631013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde7498e7e5d6b34bae80e1f091d091a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberOfColors: 3
+  colorMaterials:
+  - {fileID: 2100000, guid: 00e8992fe01df84458b446dbf212b25e, type: 2}
+  - {fileID: 2100000, guid: 501927e0eee64614eae281a25eef31e5, type: 2}
+  - {fileID: 2100000, guid: 2b3bf1945b4fab0428f7a18eb11267e6, type: 2}
+  - {fileID: 2100000, guid: 8091a8569119d2b498bf80c462bb6870, type: 2}
 --- !u!1 &1481141194
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,6 +464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfLanes: 4
   clipDurationsSeconds: 8
+  playerMoveIncrementMeters: 0.05
 --- !u!1 &1795716036
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,6 +493,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.005, z: -5}
   m_LocalScale: {x: 2, y: 1, z: 2}
   m_Children:
+  - {fileID: 697631014}
   - {fileID: 1809585022}
   m_Father: {fileID: 2078993238}
   m_RootOrder: 1
@@ -552,7 +603,7 @@ Transform:
   m_LocalScale: {x: 0.01, y: 1, z: 0.01}
   m_Children: []
   m_Father: {fileID: 1795716037}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!1 &2078993234
 GameObject:

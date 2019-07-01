@@ -53,4 +53,6 @@ public class LanesManager : MonoBehaviour
     public void ShowPlayer(int laneNumber) => laneRunners[laneNumber - 1].ShowPlayer();
 
     public void MovePlayer(int laneNumber, float distance) => laneRunners[laneNumber - 1].MovePlayer(distance);
+
+    public float GetPlayerPosition(int laneNumber) => laneRunners[laneNumber - 1].GetPlayerPosition();
 }
