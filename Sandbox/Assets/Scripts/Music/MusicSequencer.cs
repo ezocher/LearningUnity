@@ -33,6 +33,9 @@ public class MusicSequencer : MonoBehaviour
 
     public void StartClip(int laneNumber) => musicPlayers[laneNumber - 1].StartClip();
 
+    public void StopClip(int laneNumber) => musicPlayers[laneNumber - 1].StopClip();
+
+
     public void SetNextClipNumber(int laneNumber, int newClipNumber) => musicPlayers[laneNumber - 1].SetNextClipNumber(newClipNumber);
 
     public void PauseAll(bool[] playerActive)

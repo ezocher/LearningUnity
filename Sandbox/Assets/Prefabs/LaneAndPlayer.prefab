@@ -371,3 +371,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laneClosestDistanceMeters: 1
   laneFarthestDistanceMeters: 5
+  visualPingDuration: 2

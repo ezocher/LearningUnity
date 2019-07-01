@@ -46,6 +46,17 @@ public class MusicPlayer : MonoBehaviour
         Debug.Log("> Lane #" + laneNumber + ": Playing clip #" + nextClipNumber);
     }
 
+    public void StopClip()
+    {
+        AudioSource music = this.GetComponent<AudioSource>();
+        if (music.isPlaying)
+        {
+            music.Stop();
+            Debug.Log("> Lane #" + laneNumber + ": Music stopped");
+        }
+
+    }
+
     public void Pause()
     {
         AudioSource music = this.GetComponent<AudioSource>();
@@ -53,7 +64,7 @@ public class MusicPlayer : MonoBehaviour
         if (music.isPlaying)
         {
             music.Pause();
-            Debug.Log("> Lane #" + laneNumber + ": Paused");
+            Debug.Log("> Lane #" + laneNumber + ": Music paused");
         }
     }
 

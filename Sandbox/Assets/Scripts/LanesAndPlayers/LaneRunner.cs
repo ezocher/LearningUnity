@@ -8,6 +8,8 @@ public class LaneRunner : MonoBehaviour
     public float laneClosestDistanceMeters = 1f;
     public float laneFarthestDistanceMeters = 5f;
 
+    public float visualPingDuration = 1f;
+
     private int laneNumber;  // Lane numbers are 1..N and Lane indexes are 0..N-1
 
     private GameObject playerObject;
@@ -53,10 +55,13 @@ public class LaneRunner : MonoBehaviour
             playerObject.transform.Translate(0f, 0f, distance);
         }
 
+        return GetPlayerBucket();
+    }
+
+    public int GetPlayerBucket()
+    {
         // Math.Min is necessary because this would return 1 too high when GetPlayerPosition is exactly 1.0
         return Math.Min((int)(GetPlayerPosition() * (float)playerNumberOfColors) + 1, playerNumberOfColors);
-
-
     }
 
     // Default ("no color") is index 0
@@ -81,6 +86,13 @@ public class LaneRunner : MonoBehaviour
     public float GetPlayerPosition()
     {
         return (playerObject.transform.localPosition.z - laneClosestDistanceMeters) / (laneFarthestDistanceMeters - laneClosestDistanceMeters);
+    }
+
+    public void VisualPing()
+    {
+        int colorNumber = GetPlayerBucket();
+        SetPlayerColor(colorNumber);
+        Invoke("SetPlayerDefaultColor", visualPingDuration);
     }
 }
 

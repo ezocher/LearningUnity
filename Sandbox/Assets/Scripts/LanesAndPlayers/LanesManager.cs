@@ -42,6 +42,8 @@ public class LanesManager : MonoBehaviour
 
     public int MovePlayer(int laneNumber, float distance) => laneRunners[laneNumber - 1].MovePlayer(distance);
 
+    public void VisualPing(int laneNumber) => laneRunners[laneNumber - 1].VisualPing();
+
     public float GetPlayerPosition(int laneNumber) => laneRunners[laneNumber - 1].GetPlayerPosition();
 
     public void SetPlayerColor(int laneNumber, int colorNumber) => laneRunners[laneNumber - 1].SetPlayerColor(colorNumber);

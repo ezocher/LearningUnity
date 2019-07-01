@@ -11,8 +11,6 @@ public class InputAndTimerManager : MonoBehaviour
 
     public float playerMoveIncrementMeters = 0.02f;
 
-
-
     private const string lanesManagerObjectName = "LanesAndPlayers";
     private const string musicSequencerObjectName = "MusicSequencer";
 
@@ -23,6 +21,8 @@ public class InputAndTimerManager : MonoBehaviour
     private bool[] playerActive;
 
     private bool musicPaused = false;
+
+    private IEnumerator sequencerHeartbeat;
 
     void Start()
     {
@@ -52,8 +52,7 @@ public class InputAndTimerManager : MonoBehaviour
 
         if (numberOfPlayersActive > 0)
         {
-            StartMusic();
-            // Start HEARTBEAT
+            StartHeartbeat();
         }
     }
 
@@ -62,21 +61,26 @@ public class InputAndTimerManager : MonoBehaviour
     void Update()
     {
         updateCounter++;
-        CheckForKeyboardInput();
+        CheckAndDispatchKeyboardInput();
     }
 
 
     void TogglePlayPause()
     {
+        if (numberOfPlayersActive == 0)
+        {
+            musicPaused = false;
+            return;
+        }
+           
         if (musicPaused)
         {
-            musicSequencer.UnpauseAll(playerActive);
-            // RESTART HEARTBEAT
+            StartHeartbeat();
         }
         else
         {
-            musicSequencer.PauseAll(playerActive);
-            // PAUSE HEARTBEAT
+            StopHeartbeat();
+            StopAllMusic();
         }
         musicPaused = !musicPaused;
     }
@@ -88,30 +92,33 @@ public class InputAndTimerManager : MonoBehaviour
 
         if (playerActive[laneIndex])
         {
+            playerActive[laneIndex] = false;
             lanesManager.HidePlayer(laneNumber);
             numberOfPlayersActive--;
 
             if (numberOfPlayersActive == 0)
             {
-                // STOP HEARTBEAT
+                StopHeartbeat();
+                StopAllMusic();
+                musicPaused = false;
             }
         }
         else
         {
+            playerActive[laneIndex] = true;
             lanesManager.ShowPlayer(laneNumber);
             numberOfPlayersActive++;
 
             int bucketNumber = lanesManager.MovePlayer(laneIndex + 1, 0f);
-            lanesManager.SetPlayerColor(laneIndex + 1, bucketNumber);
+            // lanesManager.SetPlayerColor(laneIndex + 1, bucketNumber);
             musicSequencer.SetNextClipNumber(laneIndex + 1, bucketNumber);
 
             if (numberOfPlayersActive == 1)
             {
-                // START HEARTBEAT, START MUSIC
+                StartHeartbeat();
             }
         }
-        playerActive[laneIndex] = !playerActive[laneIndex];
-
+        
         Debug.Log("Number of players active = " + numberOfPlayersActive);
     }
 
@@ -124,6 +131,53 @@ public class InputAndTimerManager : MonoBehaviour
         }
     }
 
+    // Can't check for active players since they may have just been deactivated
+    void StopAllMusic()
+    {
+        for (int playerIndex = 0; playerIndex < numberOfLanes; playerIndex++)
+                musicSequencer.StopClip(playerIndex + 1);
+    }
+
+    void PlayersVisualPing()
+    {
+        for (int playerIndex = 0; playerIndex < numberOfLanes; playerIndex++)
+        {
+            if (playerActive[playerIndex])
+                lanesManager.VisualPing(playerIndex + 1);
+        }
+
+    }
+
+    void StartHeartbeat()
+    {
+        sequencerHeartbeat = PlayClipsRepeat();
+        StartCoroutine(sequencerHeartbeat);
+        Debug.Log("^^ Heartbeat started");
+    }
+
+    void StopHeartbeat()
+    {
+        StopCoroutine(sequencerHeartbeat);
+        Debug.Log("^^ Heartbeat stopped");
+    }
+
+    public IEnumerator PlayClipsRepeat()
+    {
+        const float countdownInterval = 1f;
+
+        while (true)
+        {
+            StartMusic();
+            PlayersVisualPing();
+
+            for (float remainingTime = clipDurationsSeconds; remainingTime > 0f; remainingTime -= countdownInterval)
+            {
+                Debug.Log("^^ Heartbeat countdown: " + remainingTime + " seconds left");
+                yield return new WaitForSecondsRealtime(countdownInterval);
+            }
+            
+        }
+    }
 
     // ----------------------------------------------------------------------------------------------------------------
     //  Keyboard input 
@@ -135,11 +189,21 @@ public class InputAndTimerManager : MonoBehaviour
     KeyCode[] playerStepBackKeys = { KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T, KeyCode.Y, KeyCode.U, KeyCode.I, KeyCode.O };
     KeyCode[] playerStepForwardKeys = { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.J, KeyCode.K, KeyCode.L };
 
-    KeyCode[] togglePlayPauseKeys = { KeyCode.Space, KeyCode.Escape, KeyCode.Tab };
+    KeyCode[] togglePlayPauseKeys = { KeyCode.Space, KeyCode.Tab, KeyCode.P };
 
-    private void CheckForKeyboardInput()
+    KeyCode[] quitKeys = { KeyCode.Escape, KeyCode.Delete, KeyCode.Backspace, KeyCode.End };
+
+
+    private void CheckAndDispatchKeyboardInput()
     {
         bool keyPressed = false;
+        foreach (KeyCode keyCode in quitKeys)
+            if (Input.GetKey(keyCode))
+                keyPressed = true;
+        if (keyPressed && DebounceKeys())
+            Application.Quit();
+
+        keyPressed = false;
         foreach (KeyCode keyCode in togglePlayPauseKeys)
             if (Input.GetKey(keyCode))
                 keyPressed = true;
@@ -165,7 +229,7 @@ public class InputAndTimerManager : MonoBehaviour
 
                 if (newBucketNumber > -1)
                 {
-                    lanesManager.SetPlayerColor(keyIndex + 1, newBucketNumber);
+                    // lanesManager.SetPlayerColor(keyIndex + 1, newBucketNumber);
                     musicSequencer.SetNextClipNumber(keyIndex + 1, newBucketNumber);
                 }
             }
