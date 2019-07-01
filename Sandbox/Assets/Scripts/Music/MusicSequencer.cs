@@ -33,12 +33,22 @@ public class MusicSequencer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public void PauseAll()
+    {
+        Debug.Log("= Music paused");
+    }
+
+    public void UnpauseAll()
+    {
+        Debug.Log("> Music playing");
     }
 }

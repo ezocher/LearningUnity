@@ -15,4 +15,20 @@ public class LaneRunner : MonoBehaviour
         laneNumber = laneNum;
         laneIndex = laneNumber - 1;
     }
+
+    public void HidePlayer()
+    {
+        Debug.Log("- Player #" + laneNumber + ": Deactivated");
+    }
+
+    public void ShowPlayer()
+    {
+        Debug.Log("+ Player #" + laneNumber + ": Activated");
+    }
+
+    public void MovePlayer(float distance)
+    {
+        Debug.Log("<> Player #" + laneNumber + ": Moving " + distance + " meters");
+    }
 }
+

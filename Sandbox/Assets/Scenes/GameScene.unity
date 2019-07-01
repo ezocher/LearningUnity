@@ -381,7 +381,7 @@ GameObject:
   - component: {fileID: 1481141195}
   - component: {fileID: 1481141196}
   m_Layer: 0
-  m_Name: InputManager
+  m_Name: InputAndTimerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -414,6 +414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfLanes: 4
+  clipDurationsSeconds: 8
 --- !u!1 &1795716036
 GameObject:
   m_ObjectHideFlags: 0
