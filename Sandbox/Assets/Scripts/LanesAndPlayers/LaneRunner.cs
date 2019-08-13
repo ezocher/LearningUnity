@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class LaneRunner : MonoBehaviour
 {
-    public float laneClosestDistanceMeters = 1f;
-    public float laneFarthestDistanceMeters = 5f;
+    private float laneClosestDistanceMeters = 1f;
+    private float laneFarthestDistanceMeters = 5f;
 
-    public float visualPingDuration = 1f;
+    private float visualPingDuration = 0.5f;
 
     private int laneNumber;  // Lane numbers are 1..N and Lane indexes are 0..N-1
 

@@ -23,7 +23,12 @@ public class MusicPlayer : MonoBehaviour
 
         if (clips.Length < numberOfClipsPerLane)
         {
-            Debug.Log("*** Error: Lane #" + laneNumber + " - Only " + clips.Length + " clips available when " + numberOfClipsPerLane + " were expected");
+            Debug.Log("*** FATAL ERROR: Lane #" + laneNumber + " - Only " + clips.Length + " clips available when " + numberOfClipsPerLane + " were expected");
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
         else
         {

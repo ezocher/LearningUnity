@@ -201,7 +201,11 @@ public class InputAndTimerManager : MonoBehaviour
             if (Input.GetKey(keyCode))
                 keyPressed = true;
         if (keyPressed && DebounceKeys())
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
             Application.Quit();
+#endif
 
         keyPressed = false;
         foreach (KeyCode keyCode in togglePlayPauseKeys)

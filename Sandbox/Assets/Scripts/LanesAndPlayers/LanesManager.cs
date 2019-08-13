@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class LanesManager : MonoBehaviour
 {
-    public float laneSeparationAngleDegrees = 20f;
+    private float laneAngleTotalSpanDegrees = 60f;
+
     public GameObject lanePrefab;
 
     const string laneNamePrefix = "LaneAndPlayer";
@@ -14,7 +15,10 @@ public class LanesManager : MonoBehaviour
 
     public void Initialize(int numLanes)
     {
+
         numberOfLanes = numLanes;
+
+        float laneSeparationAngleDegrees = laneAngleTotalSpanDegrees / (numberOfLanes - 1);
 
         laneRunners = new LaneRunner[numberOfLanes];
 
