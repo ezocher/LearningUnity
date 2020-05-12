@@ -469,7 +469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfLanes: 4
-  startingNumberOfActivePlayers: 1
+  startingNumberOfActivePlayers: 2
   clipDurationsSeconds: 8
   playerMoveIncrementMeters: 0.05
 --- !u!1 &1795716036
